@@ -81,7 +81,6 @@ def recursivePassword(G: Graph, cutoffProb: float, probability: float, startStr:
         global tally 
         tally[startStr] = probability
         print("\t> [{}] {:30s}| {:30.29f}".format(deltaf(), startStr, probability))
-        return
     for radiating_edge in list(zip(cycle([startStr[-nodeLength:]]), [startStr[(-nodeLength+1):] + ch for ch in charset])):
         if probability*G.edges[radiating_edge]['weight'] > cutoffProb:
             if (startStr[-nodeLength:] == radiating_edge[1]):
