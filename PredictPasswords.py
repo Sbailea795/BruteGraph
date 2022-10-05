@@ -74,7 +74,7 @@ def main(argv):
     return 0
 
 def recursivePassword(G: Graph, cutoffProb: float, probability: float, startStr: str, nodeLength: int, minPasswordLength: int, pwfile: TextIOWrapper):
-    if probability <= cutoffProb:
+    if probability <= cutoffProb or len(startStr) > 30 :
         return
     if len(startStr) >= minPasswordLength:
         pwfile.write("{:30s}| {:30.29f}".format(startStr, probability))
@@ -85,9 +85,9 @@ def recursivePassword(G: Graph, cutoffProb: float, probability: float, startStr:
     for radiating_edge in list(zip(cycle([startStr[-nodeLength:]]), [startStr[(-nodeLength+1):] + ch for ch in charset])):
         if probability*G.edges[radiating_edge]['weight'] > cutoffProb:
             if (startStr[-nodeLength:] == radiating_edge[1]):
-                recursivePassword(G, cutoffProb, probability*G.edges[radiating_edge]['weight']*.5, startStr + radiating_edge[1][-1], nodeLength, minPasswordLength, pwfile)
+                recursivePassword(G, cutoffProb, min(probability*G.edges[radiating_edge]['weight']*.5, probability*.95), startStr + radiating_edge[1][-1], nodeLength, minPasswordLength, pwfile)
             else:
-                recursivePassword(G, cutoffProb, probability*G.edges[radiating_edge]['weight'], startStr + radiating_edge[1][-1], nodeLength, minPasswordLength, pwfile)
+                recursivePassword(G, cutoffProb, min(probability*G.edges[radiating_edge]['weight']*.5, probability*.95), startStr + radiating_edge[1][-1], nodeLength, minPasswordLength, pwfile)
     return
 
 
