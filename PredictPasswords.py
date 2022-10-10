@@ -1,15 +1,10 @@
 import argparse
 from io import TextIOWrapper
-from itertools import chain, cycle, islice, product
-import json
+from itertools import cycle
 from math import factorial
-import pickle
 import string
 import sys
 import time
-from unittest import skip
-import networkx as nx
-import os
 from Generate import Graph
 
 # timer for sake of time-stamping verbosity logs
