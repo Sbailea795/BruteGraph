@@ -18,18 +18,27 @@ Using graph theory to develop a model of password probabilities
   
   
   
-  Generate Example:
+  Generate Overview:
   
-    As an example, we will use the password 'BooksAreCool123' and use digraph analysis. Generate starts with making a list of all digraphs possible, and then making a node to represent the digraph set. All valid edges/transitions are preemptively created too. Node 'ab' can transition into 'bc' because of the overlapping 'b'; 'ab' cannot transition into '12' because there is no overlap. 
+  As an example, we will use the password 'BooksAreCool123' and use digraph analysis. Generate starts with making a list of all digraphs possible, and then making a
+node to represent the digraph set. All valid edges/transitions are preemptively created too. Node 'ab' can transition into 'bc' because of the overlapping 'b'; 'ab'
+cannot transition into '12' because there is no overlap. 
     
-    After initializing a graph, Generate.py will parse passwords, with the password 'BooksAreCool123' as an example Generate.py will analyze list letter pairs: 'Bo', 'oo', 'ok', 'ks', ... '12', '23'. Generate will look at the starting digraph 'Bo'. Since node 'Bo' starts a password, the attribute 'size' of node 'Bo' is incremented. Generate.py will then weight edges of nodes that overlap. The node 'Bo' transitions into 'oo', thus the edge ('Bo','oo') will now have a weight of 1. This process is done iteratively across all digraphs of the password.
+    After initializing a graph, Generate.py will parse passwords, with the password 'BooksAreCool123' as an example Generate.py will analyze list letter pairs: 'Bo',
+'oo', 'ok', 'ks', ... '12', '23'. Generate will look at the starting digraph 'Bo'. Since node 'Bo' starts a password, the attribute 'size' of node 'Bo' is incremented.
+Generate.py will then weight edges of nodes that overlap. The node 'Bo' transitions into 'oo', thus the edge ('Bo','oo') will now have a weight of 1. This process is
+done iteratively across all digraphs of the password.
     
-    After all passwords are parsed, the size of nodes and weight of edges are normalized. Weight and size are probabilities of an occurance in a range of 0-1. Size is recalculated to be the ratio of that nodes size against all other nodes. With a second password '123456' 'Bo' and '12' would have a size of .5. For edges, it is the ratio of that edge's weight against all edges that radiate from the starting node. in the instance 'oo', there is {('oo', 'ok'),('oo','ol')}, both with a weight of one. Both of these become .5, indicating that half the time 'oo' becomes 'ool' and the other half of the time becomes 'ook'.
+    After all passwords are parsed, the size of nodes and weight of edges are normalized. Weight and size are probabilities of an occurance in a range of 0-1. Size is
+recalculated to be the ratio of that nodes size against all other nodes. With a second password '123456' 'Bo' and '12' would have a size of .5. For edges, it is the
+ratio of that edge's weight against all edges that radiate from the starting node. in the instance 'oo', there is {('oo', 'ok'),('oo','ol')}, both with a weight of
+one. Both of these become .5, indicating that half the time 'oo' becomes 'ool' and the other half of the time becomes 'ook'.
     
-    Generate.py will produce a serialization of the nodes and edges and output it to files. The format is "[edge/node]\n[probability]\n". This is used later for the predicting of passwords.
+    Generate.py will produce a serialization of the nodes and edges and output it to files. The format is "[edge/node]\n[probability]\n". This is used later for the
+predicting of passwords.
     
     
     
-    Predict Probability:
+    Predict Passwords Overview:
     
     The graph model created in Generate.py is a set of diagraphs, with possible transitions, and probabilities. To conceptually generate a password with this model, start at an arbitrary node. The password starts with a probabilty of the size of that node. Recursively, we can transition to other nodes, multiplying the probability by the weight of that edge. Using 'BooksAreCool123' again, 'Bo' has size 0.5, and thus the starting probability is the same. 'Bo' transitions into 'oo' with a weight of 1, soo 'Boo' has a probability of 0.5 still. Node 'oo' can branch to either 'ok' or 'ol' with equal 0.5 probabilty. Thus 'Book' and 'Bool' both are assigned a probability of 0.25. This can occur until either a maximum length is met or a probability threshold is met. PredictPasswords.py reads in the Generate.py graph data, and then recursively generates passwords using this method. It will rank-order passwords absed on probability and then create a password list text file.
