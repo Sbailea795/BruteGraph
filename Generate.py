@@ -1,7 +1,5 @@
 import argparse
 from itertools import cycle, product
-import json
-import networkx as nx
 import string
 import sys
 import time

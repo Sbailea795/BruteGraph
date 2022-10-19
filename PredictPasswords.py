@@ -1,15 +1,10 @@
 import argparse
 from io import TextIOWrapper
-from itertools import chain, cycle, islice, product
-import json
+from itertools import cycle
 from math import factorial
-import pickle
 import string
 import sys
 import time
-from unittest import skip
-import networkx as nx
-import os
 from Generate import Graph
 
 # timer for sake of time-stamping verbosity logs
@@ -89,7 +84,7 @@ def main(argv):
     with open("pwlist.txt", "w") as pwfile:
         for k, v in passwordDict.items():
             pwfile.write("{:30s}| {:30.29f}\n".format(k, v))
-
+            
     # Exit main
     if (args.verbose >= 1): print("# [{}] Done".format(deltaf()))
     return 0
